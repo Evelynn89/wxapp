@@ -1,0 +1,39 @@
+<view class="flex-col page">
+  <view class="flex-col section">
+    <view class="flex-col justify-start items-end">
+      <view class="section_2"></view>
+    </view>
+    <text class="text_2 mt-46" style="width: 677rpx; display: block; box-sizing: border-box">一脉传城·历史文化建筑一览</text>
+  </view>
+  <view class="flex-col justify-start group_3 mt-14">
+    <view class="flex-col list">
+      <view
+        class="flex-row items-center list-item mt-17"
+        wx:for="{{buildings}}" 
+        wx:for-item="item"
+        wx:for-index="index"
+        wx:key="index"
+        bindtap="goToIntroduction" 
+        data-id="{{item.id}}" 
+      >
+        <image style="width: 210rpx; display: block; box-sizing: border-box"
+          class="image_5"
+          src="{{item.image_url}}"
+        />
+        <view class="flex-col flex-1 ml-11">
+          <text class="self-start font">{{item.name}}</text> <!-- 显示建筑名称 -->
+          <view class="flex-col justify-start items-center self-start text-wrapper" style="height: 29rpx; display: flex; box-sizing: border-box; position: relative; left: 0rpx; top: -6rpx; width: 177rpx">
+            <text class="font_2 text_3" style="position: relative; left: 1rpx; top: 7rpx">{{item.type_text}}</text> <!-- 显示建筑类型 -->
+          </view>
+          <view class="flex-row items-center self-stretch group_2" style="position: relative; left: 0rpx; top: -6rpx">
+            <image
+              class="image_6"
+              src="https://codefun-proj-user-res-1256085488.cos.ap-guangzhou.myqcloud.com/671f84bfd54496f19fddb81b/671f84e79be4a60011611810/17301189974251409581.png"
+            />
+            <text class="font_3 ml-7" style="position: relative; left: -8rpx; top: -1rpx">{{item.address}}</text> <!-- 显示建筑地址 -->
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
