@@ -208,6 +208,45 @@ def get_random_buildings():
 def handle_upload_photo():
     return upload_photo()
 
+@app.route('/get_quiz', methods=['GET'])
+def get_quiz():
+    building_id = request.args.get('id')
+    connection = get_db_connection()
+    cursor = connection.cursor(pymysql.cursors.DictCursor)
+
+    # 查询 quiz 表中的所有问题数据，使用 id 来查询
+    cursor.execute("SELECT que_id, question, answer FROM quiz WHERE id = %s", (building_id,))
+    quiz_data = cursor.fetchall()  # 使用 fetchall() 获取所有记录
+    print("Quiz data:", quiz_data)  # 调试输出
+
+    if not quiz_data:
+        return jsonify({"error": "Quiz not found"}), 404
+
+    quizzes = []
+    for data in quiz_data:
+        que_id, question, answer = data['que_id'], data['question'], data['answer']
+
+        # 修改查询，确保 quiz_detail 中的数据也与 building_id 匹配
+        cursor.execute("SELECT text, choice FROM quiz_detail WHERE que_id = %s AND id = %s", (que_id, building_id))
+        choices = cursor.fetchall()
+
+        quiz_content = {
+            "que_id": que_id,
+            "question": question,
+            "answer": answer,
+            "choices": choices
+        }
+
+        quizzes.append(quiz_content)
+
+    cursor.close()
+    connection.close()
+
+    print("Final quiz content:", quizzes)  # 最终检查
+    return jsonify(quizzes)
+
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
 
