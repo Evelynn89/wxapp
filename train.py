@@ -101,6 +101,8 @@ GIT_INFO = check_git_info()
 
 
 def train(hyp, opt, device, callbacks):
+    class_weights = torch.tensor([3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,1,1,1,1,1,1,1,1,3,1,1,1,1,1,1,1,1,1,1,1,1], device=device)  # 对应类别权重
+    compute_loss = ComputeLoss(model, class_weights=class_weights)
     """
     Train a YOLOv5 model on a custom dataset using specified hyperparameters, options, and device, managing datasets,
     model architecture, loss computation, and optimizer steps.

@@ -110,6 +110,7 @@ class ComputeLoss:
 
     # Compute losses
     def __init__(self, model, autobalance=False):
+        self.class_weights = class_weights  # 保存类别权重
         """Initializes ComputeLoss with model and autobalance option, autobalances losses if True."""
         device = next(model.parameters()).device  # get model device
         h = model.hyp  # hyperparameters
@@ -190,8 +191,17 @@ class ComputeLoss:
         lobj *= self.hyp["obj"]
         lcls *= self.hyp["cls"]
         bs = tobj.shape[0]  # batch size
+        # 计算分类损失（加入类别权重）
+        if class_weights is not None:
+            # 应用类别权重
+            cls_loss = (F.binary_cross_entropy_with_logits(p[..., 5:], tcls, reduction='none') * class_weights[
+                tcls]).mean()
+        else:
+            cls_loss = F.binary_cross_entropy_with_logits(p[..., 5:], tcls, reduction='mean')
 
-        return (lbox + lobj + lcls) * bs, torch.cat((lbox, lobj, lcls)).detach()
+        # 确保返回 cls_loss
+        total_loss = box_loss + obj_loss + cls_loss  # 总损失
+        return total_loss, torch.cat((box_loss, obj_loss, cls_loss)).detach()
 
     def build_targets(self, p, targets):
         """Prepares model targets from input targets (image,class,x,y,w,h) for loss computation, returning class, box,
