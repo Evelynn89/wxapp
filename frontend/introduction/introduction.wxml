@@ -1,0 +1,68 @@
+<import src="/towxml/entry.wxml"/>
+
+<view class="flex-col page">
+  <!-- 顶部图片 -->
+  <image class="shrink-0 image" src="{{url}}" />
+
+  <!-- 主要内容区 -->
+  <view class="flex-col relative section">
+    <view class="flex-col self-stretch group">
+      <!-- 建筑名称和地址 -->
+      <view class="flex-row justify-between items-start group_2" style="width: 652rpx; display: flex; box-sizing: border-box">
+        <view class="flex-col items-start" style="position: relative; left: -27rpx; top: -18rpx; width: 543rpx; display: flex; box-sizing: border-box; height: 168rpx">
+          <text class="text" style="height: 64rpx; display: block; box-sizing: border-box; position: relative; left: 8rpx; top: 0rpx; width: 556rpx; font-family: STZhongsong">{{name}}</text>
+          <text class="font text_2 mt-19" style="position: relative; left: 0rpx; top: -22rpx; height: 80rpx; display: flex; box-sizing: border-box">{{address}}</text>
+        </view>
+        <button class="star-button" bindtap="goToLocation" data-id="{{id}}" style="height: 91rpx; display: block; box-sizing: border-box; left: 11rpx; top: 39rpx; width: 89rpx; position: relative">
+          <image style="position: relative; left: 14rpx; top: -74rpx; height: 79rpx; display: inline-block; box-sizing: border-box" src="/images/marker.png" class="image_2" />
+        </button>
+      </view>
+
+      <!-- 周边游玩推荐 -->
+      <view class="flex-col justify-start items-center text-wrapper view" style="position: relative; left: -27rpx; top: -22rpx; width: 656rpx; display: flex; box-sizing: border-box; height: 81rpx">
+        <button class="neighbor_button" bindtap="goToNeighbor" data-id="{{id}}">
+          <text class="font_2" style="position: relative; left: 0rpx; top: -26rpx">周边游玩景点推荐</text>
+        </button>
+      </view>
+    </view>
+    <!-- 分隔线 -->
+    <view class="self-center divider"></view>
+
+    <!-- 详情和攻略 -->
+    <view class="flex-col self-stretch group_3">
+      <view class="flex-col group_4" style="position: relative; left: -7rpx; top: 0rpx">
+        <text class="self-start font text_3">简介</text>
+        <view class="flex-col items-start self-stretch mt-7">
+          <text class="font_3">{{des}}</text>
+        </view>
+
+        <text class="self-start font text_4 mt-7">攻略</text>
+        <view class="flex-col items-start self-stretch mt-7">
+          <text class="font_3" style="height: 43rpx; display: block; box-sizing: border-box">{{guide}}</text>
+        </view>
+      </view>
+
+      <!-- 知识问答区域 -->
+      <view class="mt-22 flex-col justify-start items-center text-wrapper view_2" style="position: relative; left: -18rpx; top: 24rpx; width: 645rpx; display: flex; box-sizing: border-box">
+        <button class="neighbor_button" bindtap="navigateToQuestion" data-id="{{id}}" data-que_id="1" style="height: 12rpx; display: block; box-sizing: border-box; left: 0rpx; top: 0rpx">
+          <text class="font_2" style="position: relative; left: 0rpx; top: -26rpx">知识问答</text>
+        </button>
+      </view>
+      <view class="self-center divider" style="margin-top: 30px;"></view>
+
+      <view class="flex-col page" style="position: relative; left: -6rpx; top: 54rpx">
+        <!-- 用户输入框 -->
+        <input class="input-box" placeholder="想了解更多？请输入..." value="{{question}}" bindinput="onInputChange" />
+        <!-- 提交问题按钮 -->
+        <button bindtap="submitQuestion" style="position: relative; left: 0rpx; top: 39rpx">提交</button>
+        <!-- 显示回答 -->
+        <view style="margin-top: 30px;">
+        <!-- 使用 Towxml 转换后的富文本数据 -->
+        <template is="entry" data="{{...formattedContent}}" />
+      </view>
+        
+      </view>
+
+    </view>
+  </view>
+</view>
